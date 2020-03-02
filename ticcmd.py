@@ -237,7 +237,7 @@ class PowerUpSafeStart():
 
 class TicController(_TicController):
     """
-    Class for use the ticcmd command line tool for running the Pololu Tic Motor Controller
+    Convenience wrapper for using Pololu Tic Motor Controllers through the ticcmd command line tool.
     """
 
     def __init__(self, min_position=-2000, max_position=2000, velocity=10000, move_size=200, step_size=StepSizes.ONEHALF, power_up_down=True, safe_start=True):
