@@ -314,6 +314,10 @@ class TicController(_TicController):
             return self._set_step_mode(size)
 
 
+# TODO: add settings configuration 
+# TODO: retrieve status data
+# TODO: track position uncertain information
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
 
