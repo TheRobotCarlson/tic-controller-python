@@ -22,15 +22,15 @@ class StepSizes:
 
 
 class _TicController:
-    def __init__(self):
-        pass
+    def __init__(self, debug=True):
+        self.debug = debug
         
     def energize(self):
         """
         This command is a request for the Tic to energize the stepper motor coils by enabling its stepper motor driver. 
         The Tic will clear the “intentionally de-energized” error bit. If there are no other errors, this allows the system to start up.
         """
-        return ticcmd("--energize")
+        return ticcmd("--energize", debug=self.debug)
         
     def deenergize(self):
         """
@@ -42,7 +42,7 @@ class _TicController:
         The “energize” command will undo the effect of this command (except it will leave the “position uncertain” flag set) 
         and could make the system start up again.
         """
-        return ticcmd("--deenergize")
+        return ticcmd("--deenergize", debug=self.debug)
         
     def exit_safe_start(self):
         """
@@ -52,7 +52,7 @@ class _TicController:
         In the Tic Control Center, the green “Resume” button in the lower left will additionally exit safe 
         start if the control mode is Serial / I²C / USB.
         """
-        return ticcmd("--exit-safe-start")
+        return ticcmd("--exit-safe-start", debug=self.debug)
     
     def enter_safe_start(self):
         """
@@ -64,7 +64,7 @@ class _TicController:
         In Serial mode, an “exit safe start” command is required before the Tic will move the motor again. 
         In the speed control modes, the input must be moved to a neutral position before the Tic will exit safe start and move the motor again. 
         """
-        return ticcmd("--enter-safe-start")
+        return ticcmd("--enter-safe-start", debug=self.debug)
     
     def _set_target_position(self, position):
         """
@@ -73,7 +73,7 @@ class _TicController:
         In the Tic Control Center, the controls in the “Set target” box can be used to set a target position. 
         These controls are on the “Status” tab.
         """
-        return ticcmd("--position", str(position))
+        return ticcmd("--position", str(position), debug=self.debug)
     
     def _set_target_velocity(self, velocity):
         """
@@ -82,7 +82,7 @@ class _TicController:
         In the Tic Control Center, the controls in the “Set target” box can be used to set a target velocity. 
         These controls are on the “Status” tab.
         """
-        return ticcmd("--velocity", str(velocity))
+        return ticcmd("--velocity", str(velocity), debug=self.debug)
     
     def _halt_and_set_position(self, position):
         """
@@ -94,7 +94,7 @@ class _TicController:
         In the Tic Control Center, the “Set current position” button can be used to halt the motor 
         and set the Tic’s current position to the specified value. This button is on the “Status” tab.
         """
-        return ticcmd("--halt-and-set-position", str(position))
+        return ticcmd("--halt-and-set-position", str(position), debug=self.debug)
     
     def _halt_and_hold(self):
         """
@@ -104,11 +104,11 @@ class _TicController:
 
         In the Tic Control Center, the “Halt motor” button can be used to halt the motor. This button is on the “Status” tab.
         """
-        return ticcmd("--halt-and-hold")
+        return ticcmd("--halt-and-hold", debug=self.debug)
     
     def home(self, direction=1):
         home_dir = "fwd" if direction == 1 else "rev"
-        return ticcmd("--home", home_dir)
+        return ticcmd("--home", home_dir, debug=self.debug)
     
     def reset_command_timeout(self):
         """
@@ -116,7 +116,7 @@ class _TicController:
 
         The Tic Control Center constantly sends this command while it is connected to a Tic.
         """
-        return ticcmd("--reset-command-timeout")  
+        return ticcmd("--reset-command-timeout", debug=self.debug)  
 
     def _reset(self):
         """
@@ -140,7 +140,7 @@ class _TicController:
         (which indicates the time elapsed since the Tic’s last full microcontroller reset) or the “device reset” variable 
         (which indicates the cause of the Tic’s last full microcontroller reset).
         """
-        return ticcmd("--reset")
+        return ticcmd("--reset", debug=self.debug)
 
     def _set_max_velocity(self, velocity):
         """
@@ -152,7 +152,7 @@ class _TicController:
         The provided value will override the corresponding setting from the Tic’s non-volatile memory until the next Reset 
         (or Reinitialize) command or full microcontroller reset.
         """
-        return ticcmd("--max-speed", str(velocity))
+        return ticcmd("--max-speed", str(velocity), debug=self.debug)
 
     def _set_starting_velocity(self, velocity):
         """
@@ -165,7 +165,7 @@ class _TicController:
         The provided value will override the corresponding setting from the Tic’s non-volatile memory until the next Reset 
         (or Reinitialize) command or full microcontroller reset.        
         """
-        return ticcmd("--starting-speed", str(velocity))
+        return ticcmd("--starting-speed", str(velocity), debug=self.debug)
 
     def _set_max_acceleration(self, accel):
         """
@@ -180,7 +180,7 @@ class _TicController:
         This command does not affect the max deceleration, even if the “Use max acceleration limit for deceleration” 
         checkbox in the Tic Control Center is checked.
         """
-        return ticcmd("--max-accel", str(accel))
+        return ticcmd("--max-accel", str(accel), debug=self.debug)
 
     def _set_max_deceleration(self, accel):
         """
@@ -193,7 +193,7 @@ class _TicController:
         If the provided value is 0, then the max deceleration will be set equal to the current max acceleration value. 
         If the provided value is between 1 and 99, it is treated as 100.
         """
-        return ticcmd("--max-accel", str(accel))
+        return ticcmd("--max-accel", str(accel), debug=self.debug)
 
     def _set_step_mode(self, step_size):
         """
@@ -202,14 +202,14 @@ class _TicController:
         The provided value will override the corresponding setting from the Tic’s non-volatile memory until the next Reset 
         (or Reinitialize) command or full microcontroller reset.
         """
-        return ticcmd("--step-mode", str(step_size))
+        return ticcmd("--step-mode", str(step_size), debug=self.debug)
 
     def _get_data(self):
         """
         This command reads a block of data from the Tic’s variables; 
         the block starts from the specified offset and can have a variable length.
         """
-        return ticcmd("--status", "--full")
+        return ticcmd("--status", "--full", debug=self.debug)
 
 
 class PowerUpSafeStart():
@@ -240,8 +240,8 @@ class TicController(_TicController):
     Convenience wrapper for using Pololu Tic Motor Controllers through the ticcmd command line tool.
     """
 
-    def __init__(self, min_position=-2000, max_position=2000, velocity=10000, move_size=200, step_size=StepSizes.ONEHALF, power_up_down=True, safe_start=True):
-        super(TicController, self).__init__()
+    def __init__(self, min_position=-2000, max_position=2000, velocity=10000, move_size=200, step_size=StepSizes.ONEHALF, power_up_down=True, safe_start=True, debug=True):
+        super(TicController, self).__init__(debug=debug)
         self.min_position = min_position
         self.max_position = max_position
         self.power_up_down = power_up_down
@@ -317,7 +317,7 @@ class TicController(_TicController):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
 
-    controller = TicController()
+    controller = TicController(debug=True)
 
     controller.move_up()
 
