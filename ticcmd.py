@@ -248,7 +248,7 @@ class TicController(_TicController):
         self.velocity = velocity
         self.step_size = step_size
         self.position = 0
-        self.move_size = 200
+        self.move_size = move_size
         self.safe_start = safe_start
 
     def move_up(self):
