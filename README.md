@@ -14,7 +14,7 @@ This package requires the `ticcmd` command line tool and nothing else. Instructi
 
 ###  Install
 
-To use this package, pull it down with git:
+To use this package, either just [download](https://raw.githubusercontent.com/TheRobotCarlson/tic-controller-python/master/ticcmd.py) the file as is or pull it down with git:
 
 ```
 git clone https://github.com/TheRobotCarlson/tic-controller-python
